@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Menú Usuarios y Roles";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Menú Usuarios y Roles</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col">
+            <div class="card text-center" style="width: 100%;">
+                <a asp-controller="Roles" asp-action="Index"><img src="~/images/placeholder-600x400.png" class="card-img-top" alt="Imagen"></a>
+                <div class="card-body">
+                    <h5 class="card-title">Roles</h5>
+                    <p class="card-text">Ver Roles de Usuario disponibles</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-center" style="width: 100%;">
+                <a asp-controller="Clientes" asp-action="Index"><img src="~/images/placeholder-600x400.png" class="card-img-top" alt="Imagen"></a>
+                <div class="card-body">
+                    <h5 class="card-title">Clientes</h5>
+                    <p class="card-text">Administración de Clientes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-center" style="width: 100%;">
+                <a asp-controller="Usuarios" asp-action="Index"><img src="~/images/placeholder-600x400.png" class="card-img-top" alt="Imagen"></a>
+                <div class="card-body">
+                    <h5 class="card-title">Usuarios</h5>
+                    <p class="card-text">Administración de Usuarios</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

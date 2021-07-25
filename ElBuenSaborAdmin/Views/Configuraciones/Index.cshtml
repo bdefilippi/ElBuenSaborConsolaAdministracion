@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ElBuenSaborAdmin.Models.Configuracion>
+
+@{
+    ViewData["Title"] = "Configuración";
+}
+
+<h1>Configuración</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CantidadCocineros)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailEmpresa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TokenMercadoPago)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantidadCocineros)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailEmpresa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TokenMercadoPago)
+            </td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="~/images/bootstrap-icons-1.5.0/list.svg" />
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

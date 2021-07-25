@@ -1,0 +1,102 @@
+﻿@model ElBuenSaborAdmin.Viewmodels.IndexArticuloVM
+
+@{
+    ViewData["Title"] = "Artículos";
+}
+
+<style>
+    .stock-alerta {
+        color: red;
+    }
+
+    .stock-normal {
+        color: black
+    }
+
+</style>
+
+<h1>Artículos</h1>
+
+<p>
+    <a asp-action="Create" value="Guardar" class="btn btn-primary">Crear Nuevo</a>
+</p>
+
+<form asp-action="Index" method="get">
+    <p>
+        Rubro:
+        <select asp-for="Rubro" asp-items="Model.RubrosNombres">
+            <option value="">Todos</option>
+        </select>
+
+        Artículo:
+        <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Buscar" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Articulos[0].Imagen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articulos[0].Denominacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articulos[0].UnidadMedida)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articulos[0].StockActual)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articulos[0].StockMinimo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articulos[0].RubroArticulo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Articulos) {
+        <tr class="@(item.StockActual < item.StockMinimo ? "stock-alerta" : "stock-normal")">
+            <td>
+                @Html.DisplayFor(modelItem => item.Imagen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Denominacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnidadMedida)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockActual)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockMinimo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RubroArticulo.Denominacion)
+            </td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="~/images/bootstrap-icons-1.5.0/list.svg" />
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" asp-controller="Recetas" asp-action="Index" asp-route-id="@item.Id">Ver Receta</a></li>
+                        <li><a class="dropdown-item" asp-controller="Stocks" asp-action="Index" asp-route-id="@item.Id">Ver Ingresos</a></li>
+                        <li><a class="dropdown-item" asp-controller="PrecioVentaArticulos" asp-action="Index" asp-route-id="@item.Id">Ver Histórico Precios de Venta</a></li>
+                        <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
+                        <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></li>
+                    </ul>
+                </div>
+            </td>
+
+        </tr>
+}
+    </tbody>
+</table>
+<a asp-action="MenuArticulos" asp-controller="Home">Regresar</a>

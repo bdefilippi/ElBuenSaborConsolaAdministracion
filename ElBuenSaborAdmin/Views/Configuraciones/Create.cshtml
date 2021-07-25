@@ -1,0 +1,48 @@
+﻿@model ElBuenSaborAdmin.Models.Configuracion
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Configuracion</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CantidadCocineros" class="control-label"></label>
+                <input asp-for="CantidadCocineros" class="form-control" />
+                <span asp-validation-for="CantidadCocineros" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailEmpresa" class="control-label"></label>
+                <input asp-for="EmailEmpresa" class="form-control" />
+                <span asp-validation-for="EmailEmpresa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TokenMercadoPago" class="control-label"></label>
+                <input asp-for="TokenMercadoPago" class="form-control" />
+                <span asp-validation-for="TokenMercadoPago" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Disabled" /> @Html.DisplayNameFor(model => model.Disabled)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Regresar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

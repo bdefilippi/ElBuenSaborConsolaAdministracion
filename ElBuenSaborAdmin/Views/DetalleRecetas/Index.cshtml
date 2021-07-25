@@ -1,0 +1,55 @@
+﻿@model ElBuenSaborAdmin.Viewmodels.IndexDetalleRecetaVM
+
+@{
+    ViewData["Title"] = "Detalle Receta";
+}
+
+<h1>Detalle Receta</h1>
+
+<p>
+    <a asp-action="Create" asp-route-idrec="@Model.IdReceta" asp-route-idart="@Model.IdArticulo" value="Guardar" class="btn btn-primary">Crear Nuevo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DetalleRecetas[0].Cantidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DetalleRecetas[0].Articulo.UnidadMedida)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DetalleRecetas[0].Articulo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.DetalleRecetas) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cantidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Articulo.UnidadMedida)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Articulo.Denominacion)
+            </td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="~/images/bootstrap-icons-1.5.0/list.svg" />
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
+                        <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<a asp-action="Index" asp-controller="Recetas" asp-route-id="@Model.IdArticulo">Regresar</a>

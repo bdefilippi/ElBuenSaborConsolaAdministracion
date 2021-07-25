@@ -1,0 +1,61 @@
+﻿@model ElBuenSaborAdmin.Viewmodels.IndexEgresoArticuloVM
+
+@{
+    ViewData["Title"] = "Egresos";
+}
+
+<h1>Egresos</h1>
+
+<p>
+    <a asp-action="Create" value="Guardar" class="btn btn-primary">Crear Nuevo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EgresosArticulos[0].CantidadEgresada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EgresosArticulos[0].Stock.Articulo.UnidadMedida)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EgresosArticulos[0].Stock.Articulo.Denominacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EgresosArticulos[0].DetalleFactura)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.EgresosArticulos) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantidadEgresada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock.Articulo.UnidadMedida)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock.Articulo.Denominacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DetalleFactura.Id)
+            </td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="~/images/bootstrap-icons-1.5.0/list.svg" />
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
+                        <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<a asp-action="Index" asp-controller="Stocks" asp-route-id="@Model.StockID">Regresar</a>

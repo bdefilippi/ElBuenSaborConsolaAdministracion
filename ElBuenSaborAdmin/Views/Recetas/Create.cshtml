@@ -1,0 +1,45 @@
+﻿@model ElBuenSaborAdmin.Viewmodels.CrearRecetaVM
+
+@{
+    ViewData["Title"] = "Crear";
+}
+
+<h1>Crear</h1>
+
+<h4>Receta</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TiempoEstimadoCocina" class="control-label"></label>
+                <input asp-for="TiempoEstimadoCocina" class="form-control" />
+                <span asp-validation-for="TiempoEstimadoCocina" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+                <input asp-for="Descripcion" class="form-control" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="Receta.ArticuloID" class="control-label"></label>
+            <select asp-for="Receta.ArticuloID" class ="form-control" asp-items="ViewBag.ArticuloID"></select>
+        </div>*@
+            <div class="form-group">
+                <input type="hidden" asp-for="ArticuloID" class="form-control" value=@Model.ArticuloID />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-id=@Model.ArticuloID>Regresar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

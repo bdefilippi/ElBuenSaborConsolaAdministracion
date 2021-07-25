@@ -1,0 +1,69 @@
+﻿@model ElBuenSaborAdmin.Viewmodels.IndexStockVM
+
+@{
+    ViewData["Title"] = "Ingresos Artículo";
+}
+
+<h1>Ingresos Artículo</h1>
+<h2>@Model.Articulo.Denominacion</h2>
+
+<p>
+    <a asp-action="Create" asp-route-id="@Model.Articulo.Id" value="Guardar" class="btn btn-primary">Crear Nuevo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Stocks[0].CantidadCompradorProveedor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articulo.UnidadMedida)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stocks[0].PrecioCompra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stocks[0].FechaCompra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stocks[0].CantidadDisponible)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Stocks) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantidadCompradorProveedor)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Articulo.UnidadMedida)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioCompra)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaCompra)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantidadDisponible)
+            </td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="~/images/bootstrap-icons-1.5.0/list.svg" />
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" asp-controller="EgresosArticulos" asp-action="Index" asp-route-idStock="@item.Id" asp-route-idArt="@item.ArticuloID">Ver Egresos</a></li>
+                        <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
+                        <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<a asp-action="Index" asp-controller="Articulos">Regresar</a>

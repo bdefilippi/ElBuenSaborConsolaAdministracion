@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bienvenido</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card text-center" style="width: 100%;">
+                <a asp-controller="Home" asp-action="MenuArticulos"><img src="~/images/Usuarios y roles.png" style="max-width: 200px" class="card-img-top" alt="Imagen"></a>
+                <div class="card-body">
+                    <h5 class="card-title">Artículos</h5>
+                    <p class="card-text">Administración de Artículos, Rubros, Ingresos y Egresos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-center" style="width: 100%;">
+                <a asp-controller="Home" asp-action="MenuUsuariosRoles"><img src="~/images/placeholder-600x400.png" class="card-img-top" alt="Imagen"></a>
+                <div class="card-body">
+                    <h5 class="card-title">Usuarios y Roles</h5>
+                    <p class="card-text">Administración de Roles, Clientes, Usuarios</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-center" style="width: 100%;">
+                <a asp-controller="Facturas" asp-action="Index"><img src="~/images/placeholder-600x400.png" class="card-img-top" alt="Imagen"></a>
+                <div class="card-body">
+                    <h5 class="card-title">Facturas</h5>
+                    <p class="card-text">Administración de Facturas, Impresión de Facturas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card text-center" style="width: 100%;">
+                <a asp-controller="Pedidos" asp-action="Index"><img src="~/images/placeholder-600x400.png" class="card-img-top" alt="Imagen"></a>
+                <div class="card-body">
+                    <h5 class="card-title">Pedidos</h5>
+                    <p class="card-text">Administración de Pedidos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-center" style="width: 100%;">
+                <a asp-controller="Home" asp-action="Informes"><img src="~/images/placeholder-600x400.png" class="card-img-top" alt="Imagen"></a>
+                <div class="card-body">
+                    <h5 class="card-title">Informes</h5>
+                    <p class="card-text">Generación de informes y reportes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-center" style="width: 100%;">
+                <a asp-controller="Configuraciones" asp-action="Index"><img src="~/images/placeholder-600x400.png" class="card-img-top" alt="Imagen"></a>
+                <div class="card-body">
+                    <h5 class="card-title">Configuración</h5>
+                    <p class="card-text">Configuración de cantidad de cocineros, email de la empresa y token de Mercado Pago</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
