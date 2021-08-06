@@ -1,45 +1,45 @@
 ﻿@model ElBuenSaborAdmin.Models.EgresoArticulo
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar";
 }
 
-<h1>Delete</h1>
+<h1>Eliminar</h1>
 
 <h3>¿Deseas eliminar esto?</h3>
 <div>
-    <h4>EgresoArticulo</h4>
+    <h4>Egreso</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CantidadEgresada)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CantidadEgresada)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Stock)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Stock.Articulo.UnidadMedida)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Stock.Id)
-        </dd class>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DetalleFactura)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Stock.Articulo.UnidadMedida)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Stock.Articulo.Denominacion)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DetalleFactura.Id)
-        </dd class>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Disabled)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Stock.Articulo.Denominacion)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DetalleFactura.Factura.Numero)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Disabled)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DetalleFactura.Factura.Numero)
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Regresar</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-route-idStock="@Model.StockID" asp-route-idArt="@Model.Stock.ArticuloID">Regresar</a>
     </form>
 </div>

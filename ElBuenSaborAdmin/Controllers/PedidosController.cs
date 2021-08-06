@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElBuenSaborAdmin.Data;
 using ElBuenSaborAdmin.Models;
+using ElBuenSaborAdmin.Viewmodels;
 
 namespace ElBuenSaborAdmin.Controllers
 {
@@ -20,10 +21,33 @@ namespace ElBuenSaborAdmin.Controllers
         }
 
         // GET: Pedidos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string estado, string searchString)
         {
-            var applicationDbContext = _context.Pedidos.Where(a => a.Disabled.Equals(false)).Include(p => p.Cliente).Where(a => a.Disabled.Equals(false)).Include(p => p.Domicilio).Where(a => a.Disabled.Equals(false));
-            return View(await applicationDbContext.ToListAsync());
+            var pedidos = _context.Pedidos.Where(a => a.Disabled.Equals(false))
+                .Include(p => p.Cliente).Where(a => a.Disabled.Equals(false))
+                .Include(p => p.Domicilio).Where(a => a.Disabled.Equals(false));
+
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                pedidos = pedidos.Where(a => a.Cliente.Nombre.Contains(searchString) || a.Cliente.Apellido.Contains(searchString));
+            }
+
+            if (!string.IsNullOrWhiteSpace(estado))
+            {
+                pedidos = pedidos.Where(a => a.Estado.Equals(int.Parse(estado)));
+            }
+
+
+            var indexPedidoVM = new IndexPedidoVM
+            {
+                Pedidos = await pedidos.OrderByDescending(p => p.Fecha).ToListAsync()
+
+            };
+
+            return View(indexPedidoVM);
+
+            //var applicationDbContext = _context.Pedidos.Where(a => a.Disabled.Equals(false)).Include(p => p.Cliente).Where(a => a.Disabled.Equals(false)).Include(p => p.Domicilio).Where(a => a.Disabled.Equals(false));
+            //return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Pedidos/Details/5

@@ -29,10 +29,18 @@ namespace ElBuenSaborAdmin.Models
         public ICollection<DetalleReceta> DetallesRecetas { get; set; }
         public ICollection<Stock> Stocks { get; set; }
         public ICollection<DetallePedido> DetallesPedidos { get; set; }
-        public ICollection<DetalleFactura> DetallesFacturas { get; set; }
 
         [NotMapped]
         public string GetDenominacionConUnidad { get { return this.Denominacion + " (" + this.UnidadMedida + ")"; } }
+        [NotMapped]
+        public decimal GetUltimoPrecioVenta { 
+            get {
+                decimal precioVenta = 0;
+
+                precioVenta = this.PreciosVentaArticulos.Where(p => p.Disabled.Equals(false)).OrderByDescending(p => p.Fecha).FirstOrDefault().PrecioVenta;
+
+                return precioVenta;
+            } }
 
     }
 }

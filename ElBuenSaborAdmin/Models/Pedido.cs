@@ -22,7 +22,35 @@ namespace ElBuenSaborAdmin.Models
         public Domicilio Domicilio { get; set; }
         public bool Disabled { get; set; }
         public ICollection<DetallePedido> DetallesPedido { get; set; }  //composicion
-
+        [NotMapped]
+        public string GetEstadoPedido
+        {
+            get
+            {
+                string estado = Estado switch
+                {
+                    1 => "Esperando preparación",
+                    2 => "Cocinando",
+                    3 => "Pendiente de entrega (Delivery)",
+                    4 => "Pendiente de entrega (Local)",
+                    5 => "Entregado",
+                    6 => "Cancelado",
+                    _ => "Esperando aprobación",
+                };
+                return estado;
+            }
+        }
+        [NotMapped]
+        public string GetTipoEnvio { 
+            get {
+                string estado = Estado switch
+                {
+                    1 => "Delivery",
+                    _ => "Local",
+                };
+                return estado;
+            }
+        }
 
     }
 }

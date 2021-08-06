@@ -10,7 +10,14 @@ namespace ElBuenSaborAdmin.Models
     {
         public long Id { get; set; }
         [NotMapped]
-        public double Subtotal { get; set; }
+        public decimal Subtotal { 
+            get {
+                decimal subtotal = 0;
+
+                subtotal = this.DetallePedido.Cantidad * this.DetallePedido.Articulo.GetUltimoPrecioVenta;
+
+                return subtotal;
+            } }
         public bool Disabled { get; set; }
         public long FacturaID { get; set; }
         public Factura Factura { get; set; }    //composicion

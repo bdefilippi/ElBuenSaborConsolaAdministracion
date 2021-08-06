@@ -1,46 +1,65 @@
-﻿@model IEnumerable<ElBuenSaborAdmin.Models.Pedido>
+﻿@model ElBuenSaborAdmin.Viewmodels.IndexPedidoVM
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pedidos";
 }
 
-<h1>Index</h1>
+<h1>Pedidos</h1>
 
-<p>
+@*<p>
     <a asp-action="Create" value="Guardar" class="btn btn-primary">Crear Nuevo</a>
-</p>
+</p>*@
+
+<form asp-action="Index" method="get">
+
+    <p>
+        Estado:
+        <select asp-for="Estado">
+            <option value="">Todos</option>
+            <option value="0">Esperando aprobación</option>
+            <option value="1">Esperando preparación</option>
+            <option value="2">Cocinando</option>
+            <option value="3">Pendiente de entrega (Delivery)</option>
+            <option value="4">Pendiente de entrega (Local)</option>
+            <option value="5">Entregado</option>
+            <option value="6">Cancelado</option>
+        </select>
+
+        Cliente:
+        <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Buscar" />
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Numero)
+                @Html.DisplayNameFor(model => model.Pedidos[0].Numero)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fecha)
+                @Html.DisplayNameFor(model => model.Pedidos[0].Fecha)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Estado)
+                @Html.DisplayNameFor(model => model.Pedidos[0].HoraEstimadaFin)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HoraEstimadaFin)
+                @Html.DisplayNameFor(model => model.Pedidos[0].Estado)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TipoEnvio)
+                @Html.DisplayNameFor(model => model.Pedidos[0].TipoEnvio)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cliente)
+                @Html.DisplayNameFor(model => model.Pedidos[0].Cliente)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Domicilio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Disabled)
+                @Html.DisplayNameFor(model => model.Pedidos[0].Domicilio)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Pedidos) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Numero)
@@ -49,22 +68,19 @@
                 @Html.DisplayFor(modelItem => item.Fecha)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.HoraEstimadaFin)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TipoEnvio)
+                @Html.DisplayFor(modelItem => item.GetEstadoPedido)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Id)
+                @Html.DisplayFor(modelItem => item.GetTipoEnvio)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Domicilio.Id)
+                @Html.DisplayFor(modelItem => item.Cliente.NombreCompleto)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Disabled)
+                @Html.DisplayFor(modelItem => item.Domicilio.GetDomicilioCompleto)
             </td>
             <td>
                 <div class="dropdown">
@@ -74,7 +90,6 @@
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
-                        <li><a class="dropdown-item" asp-action="Details" asp-route-id="@item.Id">Detalles</a></li>
                         <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></li>
                     </ul>
                 </div>

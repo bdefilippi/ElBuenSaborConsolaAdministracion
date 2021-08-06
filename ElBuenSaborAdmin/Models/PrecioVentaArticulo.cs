@@ -8,7 +8,7 @@ namespace ElBuenSaborAdmin.Models
     public class PrecioVentaArticulo
     {
         public long Id { get; set; }
-        public int PrecioVenta { get; set; }
+        public decimal PrecioVenta { get; set; }
         public DateTime Fecha { get; set; }
         public long ArticuloID { get; set; }
         public Articulo Articulo { get; set; }

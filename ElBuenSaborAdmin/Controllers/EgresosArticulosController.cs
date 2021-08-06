@@ -27,7 +27,12 @@ namespace ElBuenSaborAdmin.Controllers
             {
                 ArticuloID = idArt,
                 StockID = idStock,
-                EgresosArticulos = await _context.EgresosArticulos.Where(a => a.Disabled.Equals(false)).Include(e => e.Stock).Where(a => a.Disabled.Equals(false)).Include(e => e.Stock.Articulo).Where(a => a.Disabled.Equals(false)).Where(s => s.StockID == idStock).ToListAsync()
+                EgresosArticulos = await _context.EgresosArticulos.Where(a => a.Disabled.Equals(false))
+                .Include(e => e.Stock).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.Stock.Articulo).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.DetalleFactura).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.DetalleFactura.Factura).Where(a => a.Disabled.Equals(false))
+                .Where(s => s.StockID == idStock).ToListAsync()
             };
             //var applicationDbContext = _context.EgresosArticulos.Where(a => a.Disabled.Equals(false)).Include(e => e.DetalleFactura).Where(a => a.Disabled.Equals(false)).Include(e => e.Stock).Where(a => a.Disabled.Equals(false));
             //var applicationDbContext = _context.EgresosArticulos.Where(a => a.Disabled.Equals(false));
@@ -42,9 +47,11 @@ namespace ElBuenSaborAdmin.Controllers
                 return NotFound();
             }
 
-            var egresoArticulo = await _context.EgresosArticulos
-                .Include(e => e.DetalleFactura)
-                .Include(e => e.Stock)
+            var egresoArticulo = await _context.EgresosArticulos.Where(a => a.Disabled.Equals(false))
+                .Include(e => e.Stock).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.Stock.Articulo).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.DetalleFactura).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.DetalleFactura.Factura).Where(a => a.Disabled.Equals(false))
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (egresoArticulo == null)
             {
@@ -88,13 +95,17 @@ namespace ElBuenSaborAdmin.Controllers
                 return NotFound();
             }
 
-            var egresoArticulo = await _context.EgresosArticulos.FindAsync(id);
+            var egresoArticulo = await _context.EgresosArticulos.Where(a => a.Disabled.Equals(false))
+                .Include(e => e.Stock).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.Stock.Articulo).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.DetalleFactura).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.DetalleFactura.Factura).Where(a => a.Disabled.Equals(false)).FirstOrDefaultAsync(m => m.Id == id);
             if (egresoArticulo == null)
             {
                 return NotFound();
             }
-            ViewData["DetalleFacturaId"] = new SelectList(_context.DetallesFacturas.Where(r => r.Disabled.Equals(false)), "Id", "Id", egresoArticulo.DetalleFacturaId);
-            ViewData["StockID"] = new SelectList(_context.Stocks.Where(r => r.Disabled.Equals(false)), "Id", "Id", egresoArticulo.StockID);
+            ViewData["DetalleFacturaId"] = new SelectList(_context.DetallesFacturas.Where(r => r.Disabled.Equals(false)).Include(r => r.Factura).Where(r => r.Disabled.Equals(false)), "Id", "Id", egresoArticulo.DetalleFacturaId);
+            ViewData["StockID"] = new SelectList(_context.Stocks.Where(r => r.Disabled.Equals(false)).Include(r => r.Articulo).Where(r => r.Disabled.Equals(false)), "Id", "Id", egresoArticulo.StockID);
             return View(egresoArticulo);
         }
 
@@ -128,10 +139,10 @@ namespace ElBuenSaborAdmin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit), new { id = egresoArticulo.Id });
             }
-            ViewData["DetalleFacturaId"] = new SelectList(_context.DetallesFacturas.Where(r => r.Disabled.Equals(false)), "Id", "Id", egresoArticulo.DetalleFacturaId);
-            ViewData["StockID"] = new SelectList(_context.Stocks.Where(r => r.Disabled.Equals(false)), "Id", "Id", egresoArticulo.StockID);
+            ViewData["DetalleFacturaId"] = new SelectList(_context.DetallesFacturas.Where(r => r.Disabled.Equals(false)).Include(r => r.Factura).Where(r => r.Disabled.Equals(false)), "Id", "Id", egresoArticulo.DetalleFacturaId);
+            ViewData["StockID"] = new SelectList(_context.Stocks.Where(r => r.Disabled.Equals(false)).Include(r => r.Articulo).Where(r => r.Disabled.Equals(false)), "Id", "Id", egresoArticulo.StockID);
             return View(egresoArticulo);
         }
 
@@ -143,9 +154,11 @@ namespace ElBuenSaborAdmin.Controllers
                 return NotFound();
             }
 
-            var egresoArticulo = await _context.EgresosArticulos
-                .Include(e => e.DetalleFactura)
-                .Include(e => e.Stock)
+            var egresoArticulo = await _context.EgresosArticulos.Where(a => a.Disabled.Equals(false))
+                .Include(e => e.Stock).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.Stock.Articulo).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.DetalleFactura).Where(a => a.Disabled.Equals(false))
+                .Include(e => e.DetalleFactura.Factura).Where(a => a.Disabled.Equals(false))
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (egresoArticulo == null)
             {
@@ -186,7 +199,7 @@ namespace ElBuenSaborAdmin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit), new { id = egresoArticulo.Id });
             }
             return View(egresoArticulo);
         }

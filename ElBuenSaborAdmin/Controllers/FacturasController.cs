@@ -20,9 +20,12 @@ namespace ElBuenSaborAdmin.Controllers
         }
 
         // GET: Facturas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() 
         {
-            var applicationDbContext = _context.Facturas.Where(a => a.Disabled.Equals(false)).Include(f => f.Pedido).Where(a => a.Disabled.Equals(false));
+            var applicationDbContext = _context.Facturas.Where(a => a.Disabled.Equals(false))
+                .Include(f => f.DetallesFactura).Where(a => a.Disabled.Equals(false))
+                .Include(f => f.Pedido).ThenInclude(p => p.DetallesPedido).ThenInclude(d => d.Articulo).ThenInclude(a => a.PreciosVentaArticulos).Where(a => a.Disabled.Equals(false))
+                .Include(f => f.Pedido.Cliente).Where(a => a.Disabled.Equals(false));
             return View(await applicationDbContext.ToListAsync());
         }
 

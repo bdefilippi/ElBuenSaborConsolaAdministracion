@@ -6,9 +6,9 @@
 
 <h1>Egresos</h1>
 
-<p>
+@*<p>
     <a asp-action="Create" value="Guardar" class="btn btn-primary">Crear Nuevo</a>
-</p>
+</p>*@
 <table class="table">
     <thead>
         <tr>
@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.EgresosArticulos[0].Stock.Articulo.Denominacion)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EgresosArticulos[0].DetalleFactura)
+                @Html.DisplayNameFor(model => model.EgresosArticulos[0].DetalleFactura.Factura.Numero)
             </th>
             <th></th>
         </tr>
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Stock.Articulo.Denominacion)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DetalleFactura.Id)
+                @Html.DisplayFor(modelItem => item.DetalleFactura.Factura.Numero)
             </td>
             <td>
                 <div class="dropdown">
