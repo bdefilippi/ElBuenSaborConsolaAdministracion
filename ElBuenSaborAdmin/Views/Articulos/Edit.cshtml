@@ -38,6 +38,11 @@
                     <input class="form-check-input" asp-for="ALaVenta" /> @Html.DisplayNameFor(model => model.ALaVenta)
                 </label>
             </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EsManufacturado" /> @Html.DisplayNameFor(model => model.EsManufacturado)
+                </label>
+            </div>
             <div class="form-group">
                 <label asp-for="RubroArticuloID" class="control-label"></label>
                 <select asp-for="RubroArticuloID" class="form-control" asp-items="ViewBag.RubroArticuloID"></select>

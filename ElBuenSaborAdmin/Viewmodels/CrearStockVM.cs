@@ -9,7 +9,7 @@ namespace ElBuenSaborAdmin.Viewmodels
     public class CrearStockVM
     {
         public int CantidadCompradorProveedor { get; set; }
-        public double PrecioCompra { get; set; }
+        public decimal PrecioCompra { get; set; }
         public DateTime FechaCompra { get; set; }
         public int CantidadDisponible { get; set; }
         public long ArticuloID { get; set; }
