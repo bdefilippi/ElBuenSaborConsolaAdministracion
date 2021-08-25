@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElBuenSaborAdmin.Data;
 using ElBuenSaborAdmin.Models;
+using ElBuenSaborAdmin.Viewmodels;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace ElBuenSaborAdmin.Controllers
 {
@@ -181,5 +184,78 @@ namespace ElBuenSaborAdmin.Controllers
         {
             return _context.Clientes.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> PedidosCliente()
+        {
+            IQueryable<Cliente> clientesQuery = _context.Clientes.Where(r => r.Disabled.Equals(false));
+
+            var hoy = DateTime.Now;
+
+            var pedidosPorClienteVM = new PedidosPorClienteVM
+            {
+                Clientes = new SelectList(await clientesQuery.ToListAsync(), "Id", "NombreCompleto"),
+                FechaInicio = new DateTime(2020, 1, 1),
+                FechaFinal = new DateTime(hoy.Year, hoy.Month, hoy.Day, hoy.Hour, hoy.Minute, 0)
+
+            };
+
+            return View(pedidosPorClienteVM);
+        }
+
+        public async Task<IActionResult> GenerarReporte(long clienteID, DateTime fechaInicial, DateTime fechaFinal)
+        {
+            //Filtrado por cliente
+            var cliente = await _context.Clientes.Where(r => r.Disabled.Equals(false)).Where(c => c.Id == clienteID)
+                .Include(c => c.Pedidos).ThenInclude(p => p.Domicilio).Where(r => r.Disabled.Equals(false))
+                .Include(c => c.Pedidos).ThenInclude(p => p.DetallesPedido).Where(r => r.Disabled.Equals(false))
+                .FirstOrDefaultAsync();
+            //Pedidos entre fecha inicial y final
+            var pedidos = cliente.Pedidos.Where(p => p.Fecha >= fechaInicial && p.Fecha <= fechaFinal);
+
+            //Create an instance of ExcelEngine
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Pedidos");
+                var currentRow = 1;
+                worksheet.Cell(currentRow, 1).Value = "Número";
+                worksheet.Cell(currentRow, 2).Value = "Fecha";
+                worksheet.Cell(currentRow, 3).Value = "Estado";
+                worksheet.Cell(currentRow, 4).Value = "Tipo";
+                worksheet.Cell(currentRow, 5).Value = "Domicilio";
+                worksheet.Cell(currentRow, 6).Value = "Total";
+                foreach (var pedido in pedidos)
+                {
+                        currentRow++;
+                        worksheet.Cell(currentRow, 1).Value = pedido.Numero;
+                        worksheet.Cell(currentRow, 2).Value = pedido.Fecha;
+                        worksheet.Cell(currentRow, 3).Value = pedido.GetEstadoPedido;
+                        worksheet.Cell(currentRow, 4).Value = pedido.GetTipoEnvio;
+                        worksheet.Cell(currentRow, 5).Value = pedido.Domicilio.GetDomicilioCompleto;
+                        worksheet.Cell(currentRow, 6).Value = "$ " + pedido.GetTotal;
+                    
+                }
+
+                worksheet.Column(1).AdjustToContents();
+                worksheet.Column(2).AdjustToContents();
+                worksheet.Column(3).AdjustToContents();
+                worksheet.Column(4).AdjustToContents();
+                worksheet.Column(5).AdjustToContents();
+                worksheet.Column(6).AdjustToContents();
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "Pedidos "+cliente.NombreCompleto+".xlsx");
+                }
+            }
+
+        }
+
+
     }
 }

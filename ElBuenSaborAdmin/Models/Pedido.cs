@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,15 +11,20 @@ namespace ElBuenSaborAdmin.Models
     public class Pedido
     {
         public long Id { get; set; }
+        [DisplayName("Precio")]
         public long Numero { get; set; }
         public DateTime Fecha { get; set; }
         public int Estado { get; set; }
+        [DisplayName("Hora estimada de entrega")]
         public DateTime HoraEstimadaFin { get; set; }
+        [DisplayName("Retira")]
         public int TipoEnvio { get; set; }
         [NotMapped]
         public double Total { get; set; }
+        [DisplayName("Precio")]
         public long ClienteID { get; set; }
         public Cliente Cliente { get; set; }
+        [DisplayName("Precio")]
         public long DomicilioID { get; set; }
         public Domicilio Domicilio { get; set; }
         public bool Disabled { get; set; }
@@ -49,6 +56,19 @@ namespace ElBuenSaborAdmin.Models
                     _ => "Local",
                 };
                 return estado;
+            }
+        }
+        [NotMapped]
+        public decimal GetTotal
+        {
+            get
+            {
+                decimal total = 0;
+                foreach (var detalle in this.DetallesPedido)
+                {
+                    total += detalle.GetTotal;
+                }
+                return total;
             }
         }
 

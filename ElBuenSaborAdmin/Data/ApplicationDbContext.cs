@@ -31,5 +31,6 @@ namespace ElBuenSaborAdmin.Data
         public DbSet<RubroArticulo> RubrosArticulos { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public virtual DbSet<SPRanking> Rankings { get; set; }
     }
 }

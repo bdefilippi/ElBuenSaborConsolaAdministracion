@@ -23,5 +23,6 @@ namespace ElBuenSaborAdmin.Models
         public Factura Factura { get; set; }    //composicion
         public long DetallePedidoID { get; set; }
         public DetallePedido DetallePedido { get; set; }
+        public ICollection<EgresoArticulo> EgresosArticulos { get; set; }
     }
 }

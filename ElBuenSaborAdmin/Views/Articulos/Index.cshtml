@@ -63,7 +63,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model.Articulos) {
-        <tr class="@(item.StockActual < item.StockMinimo && (item.RubroArticuloID == 10 || item.RubroArticuloID == 1 || item.RubroArticuloID == 11 ) ? "stock-alerta" : "stock-normal")">
+        <tr class="@(item.StockActual < item.StockMinimo && !item.EsManufacturado ? "stock-alerta" : "stock-normal")">
             <td>
                 @Html.DisplayFor(modelItem => item.Imagen)
             </td>
@@ -74,10 +74,24 @@
                 @Html.DisplayFor(modelItem => item.UnidadMedida)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StockActual)
+                @if (item.EsManufacturado)
+                {
+                    <div>-</div>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.StockActual)
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StockMinimo)
+                @if (item.EsManufacturado)
+                {
+                    <div>-</div>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.StockMinimo)
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.GetUltimoPrecioVenta)
@@ -92,8 +106,14 @@
                     </button>
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" asp-controller="Recetas" asp-action="Index" asp-route-id="@item.Id">Ver Receta</a></li>
-                        <li><a class="dropdown-item" asp-controller="Stocks" asp-action="Index" asp-route-id="@item.Id">Ver Ingresos</a></li>
+                        @if (item.EsManufacturado)
+                        {
+                            <li><a class="dropdown-item" asp-controller="Recetas" asp-action="Index" asp-route-id="@item.Id">Ver Receta</a></li>
+                        }
+                        else
+                        {
+                            <li><a class="dropdown-item" asp-controller="Stocks" asp-action="Index" asp-route-id="@item.Id">Ver Ingresos</a></li>
+                        }
                         <li><a class="dropdown-item" asp-controller="PrecioVentaArticulos" asp-action="Index" asp-route-id="@item.Id">Ver Histórico Precios de Venta</a></li>
                         <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
                         <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></li>
