@@ -8,16 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using ElBuenSaborAdmin.Data;
 using ElBuenSaborAdmin.Models;
 using ElBuenSaborAdmin.Viewmodels;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElBuenSaborAdmin.Controllers
 {
+    //[Authorize(Roles = "Administrador")]
     public class ArticulosController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public ArticulosController(ApplicationDbContext context)
+        public ArticulosController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
         }
 
         // GET: Articulos
@@ -90,10 +97,28 @@ namespace ElBuenSaborAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Denominacion,Imagen,UnidadMedida,StockMinimo,ALaVenta,Disabled,RubroArticuloID")] Articulo articulo)
+        public async Task<IActionResult> Create(Articulo articulo)
         {
+            try
+            {
+                articulo.Imagen = await SaveImage(articulo.ImageFile);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ViewData["RubroArticuloID"] = new SelectList(_context.RubrosArticulos.Where(r => r.Disabled.Equals(false)), "Id", "Denominacion", articulo.RubroArticuloID);
+                return View(articulo);
+            }
+            
             if (ModelState.IsValid)
             {
+                //esto se asegura que si un articulo es manufacturado, no tenga ni stock, y que si o si este a la venta
+                if (articulo.EsManufacturado)
+                {
+                    articulo.StockMinimo = 0;
+                    articulo.ALaVenta = true;
+                }
+
                 _context.Add(articulo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -124,17 +149,40 @@ namespace ElBuenSaborAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Denominacion,Imagen,UnidadMedida,StockMinimo,ALaVenta,Disabled,RubroArticuloID")] Articulo articulo)
+        public async Task<IActionResult> Edit(long id, Articulo articulo)
         {
             if (id != articulo.Id)
             {
                 return NotFound();
             }
 
+            try
+            {
+                articulo.Imagen = await SaveImage(articulo.ImageFile);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ViewData["RubroArticuloID"] = new SelectList(_context.RubrosArticulos.Where(r => r.Disabled.Equals(false)), "Id", "Denominacion", articulo.RubroArticuloID);
+                return View(articulo);
+            }
+
             if (ModelState.IsValid)
             {
+                if (articulo.ImageFile != null)
+                {
+                    DeleteImage(articulo.Imagen);
+                    articulo.Imagen = await SaveImage(articulo.ImageFile);
+                }
+
                 try
                 {
+                    //esto se asegura que si un articulo es manufacturado, no tenga ni stock, y que si o si este a la venta
+                    if (articulo.EsManufacturado)
+                    {
+                        articulo.StockMinimo = 0;
+                        articulo.ALaVenta = true;
+                    }
                     _context.Update(articulo);
                     await _context.SaveChangesAsync();
                 }
@@ -226,6 +274,32 @@ namespace ElBuenSaborAdmin.Controllers
             }            
 
             return total;
+        }
+
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile)
+        {
+            string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(" ", "-");
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot/images/", imageName);
+            //var imagePath = Path.Combine("C:/Proyecto/ebsa/wwwroot/images/", imageName);
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+
+            return imageName;
+        }
+
+        [NonAction]
+        public void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot/images/", imageName);
+            //var imagePath = Path.Combine("C:/Proyecto/ebsa/wwwroot/images/", imageName);
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
         }
     }
 }

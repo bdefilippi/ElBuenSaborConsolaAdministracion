@@ -19,6 +19,8 @@ namespace ElBuenSaborAdmin.Models
         public DateTime HoraEstimadaFin { get; set; }
         [DisplayName("Retira")]
         public int TipoEnvio { get; set; }
+        [DisplayName("Forma de pago")]
+        public String FormaPago { get; set; }
         [NotMapped]
         public double Total { get; set; }
         [DisplayName("Precio")]

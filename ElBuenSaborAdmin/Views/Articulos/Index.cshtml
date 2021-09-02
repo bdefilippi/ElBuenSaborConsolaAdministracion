@@ -65,7 +65,8 @@
 @foreach (var item in Model.Articulos) {
         <tr class="@(item.StockActual < item.StockMinimo && !item.EsManufacturado ? "stock-alerta" : "stock-normal")">
             <td>
-                @Html.DisplayFor(modelItem => item.Imagen)
+                @*@Html.DisplayFor(modelItem => item.Imagen)*@
+                <img src="~/images/@item.Imagen" class="rounded-circle" height="40" width="40" asp-append-version="true"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Denominacion)
