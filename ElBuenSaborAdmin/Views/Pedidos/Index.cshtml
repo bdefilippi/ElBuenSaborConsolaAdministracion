@@ -50,6 +50,9 @@
                 @Html.DisplayNameFor(model => model.Pedidos[0].TipoEnvio)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Pedidos[0].FormaPago)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Pedidos[0].Cliente)
             </th>
             <th>
@@ -76,6 +79,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.GetTipoEnvio)
             </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Pedidos[0].FormaPago)
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.Cliente.NombreCompleto)
             </td>

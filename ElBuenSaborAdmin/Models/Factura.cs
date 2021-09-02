@@ -18,8 +18,6 @@ namespace ElBuenSaborAdmin.Models
         public DateTime Fecha { get; set; }
         [DisplayName("Valor Descuento")]
         public double MontoDescuento { get; set; }
-        [DisplayName("Forma de pago")]
-        public String FormaPago { get; set; }
         public decimal Total { get; set; }
         [NotMapped]
         [DisplayName("Costo Total")]

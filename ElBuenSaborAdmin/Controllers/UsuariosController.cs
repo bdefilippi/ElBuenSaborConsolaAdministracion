@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElBuenSaborAdmin.Data;
 using ElBuenSaborAdmin.Models;
+using ElBuenSaborAdmin.Viewmodels;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ElBuenSaborAdmin.Controllers
 {
@@ -22,7 +25,7 @@ namespace ElBuenSaborAdmin.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Usuarios.Where(a => a.Disabled.Equals(false)).Include(u => u.Rol).Where(a => a.Disabled.Equals(false));
+            var applicationDbContext = _context.Usuarios.Where(a => a.Disabled.Equals(false)).Include(u => u.Rol).Where(a => a.Disabled.Equals(false)).OrderByDescending(u=> u.RolId);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -48,7 +51,7 @@ namespace ElBuenSaborAdmin.Controllers
         // GET: Usuarios/Create
         public IActionResult Create()
         {
-            ViewData["RolId"] = new SelectList(_context.Roles.Where(r => r.Disabled.Equals(false)), "Id", "Id");
+            ViewData["RolId"] = new SelectList(_context.Roles.Where(r => r.Disabled.Equals(false)), "Id", "Nombre");
             return View();
         }
 
@@ -61,11 +64,12 @@ namespace ElBuenSaborAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
+                usuario.Clave = GetSHA256(usuario.Clave);
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Roles.Where(r => r.Disabled.Equals(false)), "Id", "Id", usuario.RolId);
+            ViewData["RolId"] = new SelectList(_context.Roles.Where(r => r.Disabled.Equals(false)), "Id", "Nombre", usuario.RolId);
             return View(usuario);
         }
 
@@ -82,8 +86,11 @@ namespace ElBuenSaborAdmin.Controllers
             {
                 return NotFound();
             }
-            ViewData["RolId"] = new SelectList(_context.Roles.Where(r => r.Disabled.Equals(false)), "Id", "Id", usuario.RolId);
-            return View(usuario);
+
+            var EditarUsuarioVM = new EditarUsuarioVM();
+            EditarUsuarioVM.Usuario = usuario;
+            ViewData["RolId"] = new SelectList(_context.Roles.Where(r => r.Disabled.Equals(false)), "Id", "Nombre", usuario.RolId);
+            return View(EditarUsuarioVM);
         }
 
         // POST: Usuarios/Edit/5
@@ -91,17 +98,27 @@ namespace ElBuenSaborAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,NombreUsuario,Clave,Disabled,RolId")] Usuario usuario)
+        public async Task<IActionResult> Edit(long id, EditarUsuarioVM editarUsuarioVM)
         {
-            if (id != usuario.Id)
+            
+            if (id != editarUsuarioVM.Usuario.Id)
             {
                 return NotFound();
             }
 
+            var clave = await _context.Usuarios.Where(u => u.Id == id).Select(u => u.Clave).FirstAsync();
+            editarUsuarioVM.Usuario.Clave = clave;
+            ModelState.Remove("Usuario.Clave");
+
             if (ModelState.IsValid)
             {
+                var usuario = editarUsuarioVM.Usuario;
                 try
                 {
+                    if (editarUsuarioVM.ReiniciarPass)
+                    {
+                        usuario.Clave = "0";
+                    }
                     _context.Update(usuario);
                     await _context.SaveChangesAsync();
                 }
@@ -118,8 +135,8 @@ namespace ElBuenSaborAdmin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Roles.Where(r => r.Disabled.Equals(false)), "Id", "Id", usuario.RolId);
-            return View(usuario);
+            ViewData["RolId"] = new SelectList(_context.Roles.Where(r => r.Disabled.Equals(false)), "Id", "Nombre", editarUsuarioVM.Usuario.RolId);
+            return View(editarUsuarioVM);
         }
 
         // GET: Usuarios/Delete/5
@@ -180,6 +197,18 @@ namespace ElBuenSaborAdmin.Controllers
         private bool UsuarioExists(long id)
         {
             return _context.Usuarios.Any(e => e.Id == id);
+        }
+
+        [NonAction]
+        public static string GetSHA256(string str)
+        {
+            SHA256 sha256 = SHA256Managed.Create();
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] stream = null;
+            StringBuilder sb = new StringBuilder();
+            stream = sha256.ComputeHash(encoding.GetBytes(str));
+            for (int i = 0; i < stream.Length; i++) sb.AppendFormat("{0:x2}", stream[i]);
+            return sb.ToString();
         }
     }
 }

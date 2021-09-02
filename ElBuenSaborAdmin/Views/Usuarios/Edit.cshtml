@@ -1,10 +1,10 @@
-﻿@model ElBuenSaborAdmin.Models.Usuario
+﻿@model ElBuenSaborAdmin.Viewmodels.EditarUsuarioVM
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar";
 }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
 <h4>Usuario</h4>
 <hr />
@@ -12,29 +12,29 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Usuario.Id" />
             <div class="form-group">
-                <label asp-for="NombreUsuario" class="control-label"></label>
-                <input asp-for="NombreUsuario" class="form-control" />
-                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                <label asp-for="Usuario.NombreUsuario" class="control-label"></label>
+                <input asp-for="Usuario.NombreUsuario" class="form-control" />
+                <span asp-validation-for="Usuario.NombreUsuario" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Usuario.Clave" class="control-label" hidden></label>
+                <input asp-for="Usuario.Clave" class="form-control" type="password" hidden />
+                <span asp-validation-for="Usuario.Clave" class="text-danger" hidden></span>
             </div>
             <div class="form-group">
-                <label asp-for="Clave" class="control-label"></label>
-                <input asp-for="Clave" class="form-control" />
-                <span asp-validation-for="Clave" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Disabled" /> @Html.DisplayNameFor(model => model.Disabled)
-                </label>
+                <label asp-for="ReiniciarPass" class="control-label"></label>
+                <input asp-for="ReiniciarPass" class="form-control" />
+                <span asp-validation-for="ReiniciarPass" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RolId" class="control-label"></label>
-                <select asp-for="RolId" class="form-control" asp-items="ViewBag.RolId"></select>
-                <span asp-validation-for="RolId" class="text-danger"></span>
+                <label asp-for="Usuario.RolId" class="control-label"></label>
+                <select asp-for="Usuario.RolId" class="form-control" asp-items="ViewBag.RolId"></select>
+                <span asp-validation-for="Usuario.RolId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>

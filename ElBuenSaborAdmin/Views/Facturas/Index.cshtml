@@ -22,9 +22,6 @@
                 Cliente
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FormaPago)
-            </th>
-            <th>
                 Total sin descuento
             </th>
             <th>
@@ -45,9 +42,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Pedido.Cliente.NombreCompleto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FormaPago)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Total)
