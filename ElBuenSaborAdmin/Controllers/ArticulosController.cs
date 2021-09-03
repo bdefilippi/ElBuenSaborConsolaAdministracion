@@ -59,7 +59,7 @@ namespace ElBuenSaborAdmin.Controllers
             {
                 Rubros = new SelectList(await rubroQuery.Distinct().ToListAsync()),
                 RubrosNombres = new SelectList(await rubroNombreQuery.Distinct().ToListAsync()),
-                Articulos = await articulos.ToListAsync()
+                Articulos = await articulos.OrderBy(a => a.Denominacion).ToListAsync()
 
             };
 

@@ -11,6 +11,7 @@ namespace ElBuenSaborAdmin.Viewmodels
     public class IngresosVM
     {
         [DisplayName("Fecha")]
+        [Required]
         public DateTime Fecha { get; set; }
     }
 }

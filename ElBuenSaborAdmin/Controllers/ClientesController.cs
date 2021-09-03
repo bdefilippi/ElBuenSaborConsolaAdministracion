@@ -25,7 +25,7 @@ namespace ElBuenSaborAdmin.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Clientes.Where(a => a.Disabled.Equals(false)).Include(c => c.Usuario);
+            var applicationDbContext = _context.Clientes.Where(a => a.Disabled.Equals(false)).OrderBy(c => c.Apellido).Include(c => c.Usuario);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -202,15 +202,22 @@ namespace ElBuenSaborAdmin.Controllers
             return View(pedidosPorClienteVM);
         }
 
-        public async Task<IActionResult> GenerarReporte(long clienteID, DateTime fechaInicial, DateTime fechaFinal)
+        //GENERAR REPORTE DE PEDIDOS POR CLIENTE
+        public async Task<IActionResult> GenerarReporte(long clienteID, DateTime fechaInicio, DateTime fechaFinal)
         {
+            string error = "";
+            if (fechaInicio > fechaFinal)
+            {
+                fechaInicio = fechaFinal;
+                error = "La fecha inicial ingresada es mayor a la fecha final ingresada";
+            }
             //Filtrado por cliente
             var cliente = await _context.Clientes.Where(r => r.Disabled.Equals(false)).Where(c => c.Id == clienteID)
                 .Include(c => c.Pedidos).ThenInclude(p => p.Domicilio).Where(r => r.Disabled.Equals(false))
                 .Include(c => c.Pedidos).ThenInclude(p => p.DetallesPedido).Where(r => r.Disabled.Equals(false))
                 .FirstOrDefaultAsync();
             //Pedidos entre fecha inicial y final
-            var pedidos = cliente.Pedidos.Where(p => p.Fecha >= fechaInicial && p.Fecha <= fechaFinal);
+            var pedidos = cliente.Pedidos.Where(p => p.Fecha >= fechaInicio && p.Fecha <= fechaFinal);
 
             //Create an instance of ExcelEngine
             using (var workbook = new XLWorkbook())
@@ -234,6 +241,8 @@ namespace ElBuenSaborAdmin.Controllers
                         worksheet.Cell(currentRow, 6).Value = "$ " + pedido.GetTotal;
                     
                 }
+                currentRow++;
+                worksheet.Cell(currentRow, 1).Value = error;
 
                 worksheet.Column(1).AdjustToContents();
                 worksheet.Column(2).AdjustToContents();

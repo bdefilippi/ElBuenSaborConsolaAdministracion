@@ -19,10 +19,10 @@ namespace ElBuenSaborAdmin.Controllers
             _context = context;
         }
 
-        // GET: DetallePedidos
-        public async Task<IActionResult> Index()
+        // GET: DetallePedidos/5
+        public async Task<IActionResult> Index(long? id)
         {
-            var applicationDbContext = _context.DetallesPedidos.Where(a => a.Disabled.Equals(false)).Include(d => d.Articulo).Where(a => a.Disabled.Equals(false)).Include(d => d.Pedido).Where(a => a.Disabled.Equals(false));
+            var applicationDbContext = _context.DetallesPedidos.Where(d => d.PedidoID == id).Where(a => a.Disabled.Equals(false)).Include(d => d.Articulo).Where(a => a.Disabled.Equals(false)).Include(d => d.Pedido).Where(a => a.Disabled.Equals(false));
             return View(await applicationDbContext.ToListAsync());
         }
 

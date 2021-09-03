@@ -20,9 +20,9 @@ namespace ElBuenSaborAdmin.Controllers
         }
 
         // GET: RubroArticulos
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index()
         {
-            var articulos = await _context.RubrosArticulos.Where(a => a.Disabled.Equals(false)).ToListAsync();
+            var articulos = await _context.RubrosArticulos.Where(a => a.Disabled.Equals(false)).OrderBy(a => a.Denominacion).ToListAsync();
 
             return View(articulos);
         }

@@ -202,6 +202,7 @@ namespace ElBuenSaborAdmin.Controllers
             return View(IngresosVM);
         }
 
+        //Generar reporte de ingresos
         public async Task<IActionResult> GenerarReporteIngresos(DateTime fecha)
         {
             //Reporte de ingresos
@@ -301,12 +302,21 @@ namespace ElBuenSaborAdmin.Controllers
             return View(GananciasVM);
         }
 
-        public async Task<IActionResult> GenerarReporteGanancias(DateTime fechaFinal, DateTime fechaInicial)
+        //Generar reporte de ganancias
+        public async Task<IActionResult> GenerarReporteGanancias(DateTime fechaFinal, DateTime fechaInicio)
         {
             //Reporte de ganancias!
             //Sale a buscar el total de las facturas para ingresos, trae egresos y stock para calcular gastos
             //Filtrado por fecha
-            var facturas = await _context.Facturas.Where(f => f.Fecha <= fechaFinal && f.Fecha >= fechaInicial)
+
+            string error = "";
+            if (fechaInicio > fechaFinal)
+            {
+                fechaInicio = fechaFinal;
+                error = "La fecha inicial ingresada es mayor a la fecha final ingresada";
+            }
+
+            var facturas = await _context.Facturas.Where(f => f.Fecha <= fechaFinal && f.Fecha >= fechaInicio)
                 .Include(f => f.DetallesFactura).ThenInclude(d => d.EgresosArticulos).ThenInclude(e => e.Stock)
                 .Where(r => r.Disabled.Equals(false)).OrderBy(f => f.Fecha).ToListAsync();
 
@@ -349,6 +359,8 @@ namespace ElBuenSaborAdmin.Controllers
                 worksheet.Cell(currentRow, 4).Value = "$" + totalCostos;
                 worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
 
+                currentRow++;
+                worksheet.Cell(currentRow, 1).Value = error;
 
 
                 using (var stream = new MemoryStream())
@@ -359,7 +371,7 @@ namespace ElBuenSaborAdmin.Controllers
                     return File(
                         content,
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        "Ganancias - " + fechaInicial.Day +"/"+fechaInicial.Month+"/"+fechaInicial.Year + " a "  + fechaFinal.Day + "/" + fechaFinal.Month + "/" + fechaFinal.Year + ".xlsx");
+                        "Ganancias - " + fechaInicio.Day +"/"+ fechaInicio.Month+"/"+ fechaInicio.Year + " a "  + fechaFinal.Day + "/" + fechaFinal.Month + "/" + fechaFinal.Year + ".xlsx");
                 }
             }
 
@@ -379,13 +391,21 @@ namespace ElBuenSaborAdmin.Controllers
             return View(RankingVM);
         }
 
-        public async Task<IActionResult> GenerarReporteRanking(DateTime fechaFinal, DateTime fechaInicial)
+        //Generar reporte ranking de comidas
+        public async Task<IActionResult> GenerarReporteRanking(DateTime fechaFinal, DateTime fechaInicio)
         {
             /* Reporte de ranking de comidas más compradas
              * Llamada mediante un stored procedure hermoso que armé en la DB :')
              * RankingProductos @FechaInicial, @FechaFinal
              * Devuelve una tabla ordenada de mayor a menor de la suma de las cantidades productos manufacturados encontrados entre las fechas
              */
+
+            string error = "";
+            if (fechaInicio > fechaFinal)
+            {
+                fechaInicio = fechaFinal;
+                error = "La fecha inicial ingresada es mayor a la fecha final ingresada";
+            }
 
             //Create an instance of ExcelEngine
             using (var workbook = new XLWorkbook())
@@ -397,7 +417,7 @@ namespace ElBuenSaborAdmin.Controllers
                 worksheet.Cell(currentRow, 3).Value = "Cantidad";
 
                 //llamada al SP
-                var rankings = await _context.Rankings.FromSqlInterpolated($"RankingProductos {fechaInicial}, {fechaFinal}").ToListAsync();
+                var rankings = await _context.Rankings.FromSqlInterpolated($"RankingProductos {fechaInicio}, {fechaFinal}").ToListAsync();
 
                 foreach (var item in rankings)
                 {
@@ -411,6 +431,9 @@ namespace ElBuenSaborAdmin.Controllers
                 worksheet.Column(2).AdjustToContents();
                 worksheet.Column(3).AdjustToContents();
 
+                currentRow++;
+                worksheet.Cell(currentRow, 1).Value = error;
+
                 using (var stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
@@ -419,7 +442,7 @@ namespace ElBuenSaborAdmin.Controllers
                     return File(
                         content,
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        "Ranking Artículos - " + fechaInicial.Day + "/" + fechaInicial.Month + "/" + fechaInicial.Year + " a " + fechaFinal.Day + "/" + fechaFinal.Month + "/" + fechaFinal.Year + ".xlsx");
+                        "Ranking Artículos - " + fechaInicio.Day + "/" + fechaInicio.Month + "/" + fechaInicio.Year + " a " + fechaFinal.Day + "/" + fechaFinal.Month + "/" + fechaFinal.Year + ".xlsx");
                 }
             }
 
