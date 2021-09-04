@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ElBuenSaborAdmin.Controllers
 {
-    //[Authorize(Roles = "Administrador")]
+    [Authorize]
     public class ArticulosController : Controller
     {
         private readonly ApplicationDbContext _context;

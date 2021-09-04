@@ -11,9 +11,11 @@ using ClosedXML.Excel;
 using System.IO;
 using ElBuenSaborAdmin.Viewmodels;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElBuenSaborAdmin.Controllers
 {
+    [Authorize]
     public class FacturasController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -10,9 +10,11 @@ using ElBuenSaborAdmin.Models;
 using ElBuenSaborAdmin.Viewmodels;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElBuenSaborAdmin.Controllers
 {
+    [Authorize]
     public class UsuariosController : Controller
     {
         private readonly ApplicationDbContext _context;

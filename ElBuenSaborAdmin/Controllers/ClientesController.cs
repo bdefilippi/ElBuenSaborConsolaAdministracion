@@ -10,9 +10,11 @@ using ElBuenSaborAdmin.Models;
 using ElBuenSaborAdmin.Viewmodels;
 using ClosedXML.Excel;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElBuenSaborAdmin.Controllers
 {
+    [Authorize]
     public class ClientesController : Controller
     {
         private readonly ApplicationDbContext _context;
