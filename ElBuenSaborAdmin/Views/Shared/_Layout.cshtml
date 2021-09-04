@@ -21,14 +21,20 @@
                     <ul class="navbar-nav flex-grow-1">
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Home</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a classs="dropdown-item" href="#">Articulos</a>
-                                <a classs="dropdown-item" href="#">Articulos</a>
-                            </div>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Categorías
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="MenuArticulos">Artículos</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="MenuUsuariosRoles">Usuarios y Roles</a></li>
+                                <li><a class="dropdown-item" asp-controller="Facturas" asp-action="Index">Facturas</a></li>
+                                <li><a class="dropdown-item" asp-controller="Pedidos" asp-action="Index">Pedidos</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Informes">Informes</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Configuraciones" asp-action="Index">Configuración</a></li>
+                            </ul>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>

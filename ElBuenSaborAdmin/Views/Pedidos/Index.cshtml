@@ -79,9 +79,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.GetTipoEnvio)
             </td>
-            <th>
-                @Html.DisplayNameFor(model => model.Pedidos[0].FormaPago)
-            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.FormaPago)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Cliente.NombreCompleto)
             </td>
@@ -95,7 +95,7 @@
                     </button>
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Ver Detalles</a></li>
+                        <li><a class="dropdown-item" asp-action="Index" asp-controller="DetallePedidos" asp-route-id="@item.Id">Ver Detalle</a></li>
                     </ul>
                 </div>
             </td>

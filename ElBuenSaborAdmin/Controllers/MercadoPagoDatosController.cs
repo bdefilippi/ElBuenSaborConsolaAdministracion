@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElBuenSaborAdmin.Data;
 using ElBuenSaborAdmin.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElBuenSaborAdmin.Controllers
 {
+    [Authorize]
     public class MercadoPagoDatosController : Controller
     {
         private readonly ApplicationDbContext _context;

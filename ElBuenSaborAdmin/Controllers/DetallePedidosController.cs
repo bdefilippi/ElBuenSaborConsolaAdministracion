@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElBuenSaborAdmin.Data;
 using ElBuenSaborAdmin.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElBuenSaborAdmin.Controllers
 {
+    [Authorize]
     public class DetallePedidosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,10 +21,10 @@ namespace ElBuenSaborAdmin.Controllers
             _context = context;
         }
 
-        // GET: DetallePedidos
-        public async Task<IActionResult> Index()
+        // GET: DetallePedidos/5
+        public async Task<IActionResult> Index(long? id)
         {
-            var applicationDbContext = _context.DetallesPedidos.Where(a => a.Disabled.Equals(false)).Include(d => d.Articulo).Where(a => a.Disabled.Equals(false)).Include(d => d.Pedido).Where(a => a.Disabled.Equals(false));
+            var applicationDbContext = _context.DetallesPedidos.Where(d => d.PedidoID == id).Where(a => a.Disabled.Equals(false)).Include(d => d.Articulo).Where(a => a.Disabled.Equals(false)).Include(d => d.Pedido).Where(a => a.Disabled.Equals(false));
             return View(await applicationDbContext.ToListAsync());
         }
 

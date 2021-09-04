@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ElBuenSaborAdmin.Controllers
 {
-    //[Authorize(Roles = "Administrador")]
+    [Authorize]
     public class ArticulosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -59,7 +59,7 @@ namespace ElBuenSaborAdmin.Controllers
             {
                 Rubros = new SelectList(await rubroQuery.Distinct().ToListAsync()),
                 RubrosNombres = new SelectList(await rubroNombreQuery.Distinct().ToListAsync()),
-                Articulos = await articulos.ToListAsync()
+                Articulos = await articulos.OrderBy(a => a.Denominacion).ToListAsync()
 
             };
 

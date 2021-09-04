@@ -10,23 +10,29 @@
     <div class="row">
 
         <div class="col">
-            <div class="card text-center" style="width: 100%;">
-                <a asp-controller="Articulos" asp-action="Index"><img src="~/images/placeholder-600x400.png" class="card-img-top" alt="Imagen"></a>
-                <div class="card-body">
-                    <h5 class="card-title">Artículos</h5>
-                    <p class="card-text">Administración de Artículos, Precios, Recetas, Ingresos y Egresos</p>
+            <a asp-controller="Articulos" asp-action="Index" class="text-decoration-none">
+                <div class="card text-center" style="width: 100%;">
+                    <img src="~/images/icons/articulos-individuales.png" class="card-img-top" alt="Imagen">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Artículos</h5>
+                        <p class="card-text">Administración de Artículos, Precios, Recetas, Ingresos y Egresos</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="col">
-            <div class="card text-center" style="width: 100%;">
-                <a asp-controller="RubroArticulos" asp-action="Index"><img src="~/images/placeholder-600x400.png" class="card-img-top" alt="Imagen"></a>
-                <div class="card-body">
-                    <h5 class="card-title">Rubros</h5>
-                    <p class="card-text">Administración de Rubros</p>
+            <a asp-controller="RubroArticulos" asp-action="Index" class="text-decoration-none">
+                <div class="card text-center" style="width: 100%;">
+                    <img src="~/images/icons/rubros.png" class="card-img-top" alt="Imagen">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Rubros</h5>
+                        <p class="card-text">Administración de Rubros</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
 
     </div>
