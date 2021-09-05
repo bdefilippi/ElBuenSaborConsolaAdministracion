@@ -388,6 +388,11 @@ namespace ElBuenSaborAdmin.Controllers
                 worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
                 worksheet.Cell(currentRow, 4).Value = "$" + totalCostos;
                 worksheet.Cell(currentRow, 4).Style.Font.Bold = true;
+                currentRow++;
+                worksheet.Cell(currentRow, 2).Value = "TOTAL";
+                worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
+                worksheet.Cell(currentRow, 3).Value = "$"+(totalVentas-totalCostos);
+                worksheet.Cell(currentRow, 3).Style.Font.Bold = true;
 
                 currentRow++;
                 worksheet.Cell(currentRow, 1).Value = error;
