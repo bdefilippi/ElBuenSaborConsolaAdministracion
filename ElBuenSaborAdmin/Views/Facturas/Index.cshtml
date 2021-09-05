@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ElBuenSaborAdmin.Models.Factura>
+﻿@model ElBuenSaborAdmin.Viewmodels.IndexFacturaVM
 
 @{
     ViewData["Title"] = "Facturas";
@@ -9,14 +9,24 @@
 @*<p>
     <a asp-action="Create" value="Guardar" class="btn btn-primary">Crear Nuevo</a>
 </p>*@
+
+
+<form asp-action="Index" method="get">
+
+    <p>
+        Cliente:
+        <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Buscar" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Numero)
+                @Html.DisplayNameFor(model => model.Facturas[0].Numero)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fecha)
+                @Html.DisplayNameFor(model => model.Facturas[0].Fecha)
             </th>
             <th>
                 Cliente
@@ -25,14 +35,14 @@
                 Total sin descuento
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MontoDescuento)
+                @Html.DisplayNameFor(model => model.Facturas[0].MontoDescuento)
             </th>
 
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Facturas) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Numero)
@@ -57,7 +67,7 @@
                     </button>
 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" asp-action="Index" asp-controller="DetalleFacturas" asp-route-id="@item.Id">Ver Factura</a></li>
+                        <li><a class="dropdown-item" asp-action="VerFactura" asp-controller="Facturas" asp-route-numero="@item.Numero" target="_blank">Ver Factura</a></li>
                         @*<li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
                         <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></li>*@
                     </ul>

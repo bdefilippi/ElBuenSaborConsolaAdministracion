@@ -26,13 +26,24 @@ namespace ElBuenSaborAdmin.Controllers
         }
 
         // GET: Facturas
-        public async Task<IActionResult> Index() 
+        public async Task<IActionResult> Index(string searchString)
         {
-            var applicationDbContext = _context.Facturas.Where(a => a.Disabled.Equals(false))
+            var facturas = _context.Facturas.Where(a => a.Disabled.Equals(false))
                 .Include(f => f.DetallesFactura).Where(a => a.Disabled.Equals(false))
                 .Include(f => f.Pedido).ThenInclude(p => p.DetallesPedido).ThenInclude(d => d.Articulo).ThenInclude(a => a.PreciosVentaArticulos).Where(a => a.Disabled.Equals(false))
                 .Include(f => f.Pedido.Cliente).Where(a => a.Disabled.Equals(false));
-            return View(await applicationDbContext.ToListAsync());
+
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                facturas = facturas.Where(a => a.Pedido.Cliente.Nombre.Contains(searchString) || a.Pedido.Cliente.Apellido.Contains(searchString));
+            }
+
+            var indexFacturaVM = new IndexFacturaVM
+            {
+                Facturas = await facturas.OrderByDescending(p => p.Fecha).ToListAsync()
+            };
+
+            return View(indexFacturaVM);
         }
 
         // GET: Facturas/Details/5
@@ -189,6 +200,23 @@ namespace ElBuenSaborAdmin.Controllers
         private bool FacturaExists(long id)
         {
             return _context.Facturas.Any(e => e.Id == id);
+        }
+
+        // GET: VerFacturas
+        public FileResult VerFactura(long numero)
+        {
+            //CREO que la ruta esta bien, hay que probarla
+            var searchString = "F-" + numero + " -";
+            var allfiles = Directory.EnumerateFiles("../ebs/wwwroot/PDF", searchString+"*.*", SearchOption.AllDirectories);
+
+            var path = allfiles.First();
+
+            //Read the File data into Byte Array.
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            //Send the File to Download.
+            return File(bytes, "application/pdf");
+
         }
 
         public IActionResult Ingresos()
