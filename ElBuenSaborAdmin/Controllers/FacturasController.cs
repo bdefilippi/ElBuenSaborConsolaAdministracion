@@ -205,7 +205,7 @@ namespace ElBuenSaborAdmin.Controllers
         // GET: VerFacturas
         public FileResult VerFactura(long numero)
         {
-            //CREO que la ruta esta bien, hay que probarla
+            //Apunta a la ruta de la carpeta en el servidor, el formato de la factura es F-"numero" - "nombre" "apellido".pdf
             var searchString = "F-" + numero + " -";
             var allfiles = Directory.EnumerateFiles("../ebs/wwwroot/PDF", searchString+"*.*", SearchOption.AllDirectories);
 

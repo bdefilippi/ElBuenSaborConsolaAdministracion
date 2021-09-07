@@ -18,7 +18,6 @@ namespace ElBuenSaborAdmin.Models
         public String Denominacion { get; set; }
         public String Imagen { get; set; }
         [DisplayName("Imagen")]
-        [Required(ErrorMessage = "{0} es un campo requerido")]
         [NotMapped]
         public IFormFile ImageFile { get; set; }
         [NotMapped]
@@ -41,6 +40,7 @@ namespace ElBuenSaborAdmin.Models
         [DisplayName("Rubro")]
         [Required(ErrorMessage = "{0} es un campo requerido")]
         public long RubroArticuloID { get; set; }
+        [DisplayName("Rubro")]
         public RubroArticulo RubroArticulo { get; set; }
         public ICollection<PrecioVentaArticulo> PreciosVentaArticulos { get; set; }
         public ICollection<Receta> Recetas { get; set; }

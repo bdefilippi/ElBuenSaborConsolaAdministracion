@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using static System.Net.WebRequestMethods;
 
 namespace ElBuenSaborAdmin.Controllers
 {
@@ -99,15 +100,14 @@ namespace ElBuenSaborAdmin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Articulo articulo)
         {
-            try
+
+            if (articulo.ImageFile == null)
+            {
+                articulo.Imagen = "placeholder-600x400.png";
+            }
+            else
             {
                 articulo.Imagen = await SaveImage(articulo.ImageFile);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                ViewData["RubroArticuloID"] = new SelectList(_context.RubrosArticulos.Where(r => r.Disabled.Equals(false)), "Id", "Denominacion", articulo.RubroArticuloID);
-                return View(articulo);
             }
             
             if (ModelState.IsValid)
@@ -156,23 +156,29 @@ namespace ElBuenSaborAdmin.Controllers
                 return NotFound();
             }
 
-            try
-            {
-                articulo.Imagen = await SaveImage(articulo.ImageFile);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                ViewData["RubroArticuloID"] = new SelectList(_context.RubrosArticulos.Where(r => r.Disabled.Equals(false)), "Id", "Denominacion", articulo.RubroArticuloID);
-                return View(articulo);
-            }
 
             if (ModelState.IsValid)
             {
-                if (articulo.ImageFile != null)
+                if (articulo.ImageFile == null)
                 {
-                    DeleteImage(articulo.Imagen);
-                    articulo.Imagen = await SaveImage(articulo.ImageFile);
+                    if (articulo.Imagen == null)
+                    {
+                        articulo.Imagen = "placeholder-600x400.png";
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        DeleteImage(articulo.Imagen);
+                        articulo.Imagen = await SaveImage(articulo.ImageFile);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        ViewData["RubroArticuloID"] = new SelectList(_context.RubrosArticulos.Where(r => r.Disabled.Equals(false)), "Id", "Denominacion", articulo.RubroArticuloID);
+                        return View(articulo);
+                    }
                 }
 
                 try
@@ -279,22 +285,31 @@ namespace ElBuenSaborAdmin.Controllers
         [NonAction]
         public async Task<string> SaveImage(IFormFile imageFile)
         {
-            string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(" ", "-");
-            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot/images/", imageName);
-            //var imagePath = Path.Combine("C:/Proyecto/ebsa/wwwroot/images/", imageName);
-            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            try
             {
-                await imageFile.CopyToAsync(fileStream);
+                string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(" ", "-");
+                imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+                var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot/images/", imageName); //development
+                //var imagePath = Path.Combine("http://elbuensabor.ddns.net:81/images/", imageName);
+                //var imagePath = Path.Combine("C:/Proyecto/ebsa/wwwroot/images/", imageName);
+                using (var fileStream = new FileStream(imagePath, FileMode.Create, FileAccess.Write))
+                {
+                    await imageFile.CopyToAsync(fileStream);
+                }
+                return imageName;
             }
+            catch (Exception)
+            {
 
-            return imageName;
+                throw;
+            }
         }
 
         [NonAction]
         public void DeleteImage(string imageName)
         {
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot/images/", imageName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot/images/", imageName); //development
+            //var imagePath = Path.Combine("http://elbuensabor.ddns.net:81/images/", imageName);
             //var imagePath = Path.Combine("C:/Proyecto/ebsa/wwwroot/images/", imageName);
             if (System.IO.File.Exists(imagePath))
             {

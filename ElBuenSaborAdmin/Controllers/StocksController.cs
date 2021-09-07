@@ -28,7 +28,7 @@ namespace ElBuenSaborAdmin.Controllers
             var stockVM = new IndexStockVM
             {
                 Stocks = await _context.Stocks.Where(a => a.Disabled.Equals(false)).Include(s => s.Articulo).Where(a => a.Disabled.Equals(false)).Where(s => s.ArticuloID == id).OrderByDescending(s => s.FechaCompra).ToListAsync(),
-                Articulo = await _context.Stocks.Where(a => a.Disabled.Equals(false)).Select(s => s.Articulo).Where(a => a.Id == id).FirstOrDefaultAsync()
+                Articulo = await _context.Articulos.Where(a => a.Disabled.Equals(false)).Where(a => a.Id == id).FirstOrDefaultAsync()
             };
 
             if (stockVM.Articulo == null) {
@@ -61,11 +61,11 @@ namespace ElBuenSaborAdmin.Controllers
         }
 
         // GET: Stocks/Create
-        public IActionResult Create(long? id)
+        public IActionResult Create(long id)
         {
             var stockVM = new CrearStockVM
             {
-                ArticuloID = (long)id,
+                ArticuloID = id,
                 FechaCompra = DateTime.Now
             };
 

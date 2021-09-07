@@ -66,7 +66,9 @@
         <tr class="@(item.StockActual < item.StockMinimo && !item.EsManufacturado ? "stock-alerta" : "stock-normal")">
             <td>
                 @*@Html.DisplayFor(modelItem => item.Imagen)*@
-                <img src="~/images/@item.Imagen" class="rounded-circle" height="40" width="40" asp-append-version="true"/>
+                <center>
+                    <img src="~/images/@item.Imagen" class="rounded-circle" height="40" asp-append-version="true"/>
+                </center>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Denominacion)
@@ -95,7 +97,14 @@
                 }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GetUltimoPrecioVenta)
+                @if (item.RubroArticuloID == 1)
+                {
+                    <div>-</div>
+                }
+                else
+                {
+                    <div>$@Html.DisplayFor(modelItem => item.GetUltimoPrecioVenta)</div>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RubroArticulo.Denominacion)
@@ -115,7 +124,10 @@
                         {
                             <li><a class="dropdown-item" asp-controller="Stocks" asp-action="Index" asp-route-id="@item.Id">Ver Ingresos</a></li>
                         }
-                        <li><a class="dropdown-item" asp-controller="PrecioVentaArticulos" asp-action="Index" asp-route-id="@item.Id">Ver Histórico Precios de Venta</a></li>
+                        @if (item.RubroArticuloID != 1)
+                        {
+                            <li><a class="dropdown-item" asp-controller="PrecioVentaArticulos" asp-action="Index" asp-route-id="@item.Id">Ver Histórico Precios de Venta</a></li>
+                        }
                         <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
                         <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></li>
                     </ul>
