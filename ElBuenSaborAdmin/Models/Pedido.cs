@@ -11,7 +11,7 @@ namespace ElBuenSaborAdmin.Models
     public class Pedido
     {
         public long Id { get; set; }
-        [DisplayName("Precio")]
+        [DisplayName("Número")]
         public long Numero { get; set; }
         public DateTime Fecha { get; set; }
         public int Estado { get; set; }
@@ -38,6 +38,7 @@ namespace ElBuenSaborAdmin.Models
             {
                 string estado = Estado switch
                 {
+                    -1 => "Esperando pago",
                     1 => "Esperando preparación",
                     2 => "Cocinando",
                     3 => "Pendiente de entrega (Delivery)",
