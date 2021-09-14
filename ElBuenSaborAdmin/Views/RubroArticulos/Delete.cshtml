@@ -18,6 +18,7 @@
             @Html.DisplayFor(model => model.Denominacion)
         </dd>
     </dl>
+    <p style="color: red">@ViewBag.Error</p>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />

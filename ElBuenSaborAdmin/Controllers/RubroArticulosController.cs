@@ -143,11 +143,18 @@ namespace ElBuenSaborAdmin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var rubroArticulo = await _context.RubrosArticulos.FindAsync(id);
+            var rubroArticulo = await _context.RubrosArticulos.Where(r => r.Id == id).Include(r => r.Articulos).FirstAsync();
 
             if (id != rubroArticulo.Id)
             {
                 return NotFound();
+            }
+
+            //Revisar que el rubro este vacio antes de eliminarlo
+            if (rubroArticulo.Articulos.Count != 0)
+            {
+                ViewBag.Error = "No puede eliminar un rubro en el que existan artículos, por favor cambie el rubro de los artículos asociados con este rubro.";
+                return View(rubroArticulo);
             }
 
             if (ModelState.IsValid)
