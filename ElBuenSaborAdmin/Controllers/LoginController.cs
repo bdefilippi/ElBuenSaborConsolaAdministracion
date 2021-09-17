@@ -84,6 +84,9 @@ namespace ElBuenSaborAdmin.Controllers
                 }
 
             }
+
+            ViewBag.Error = "El usuario o la contraseña ingresados son incorrectos.";
+
             return View("Index");
         }
 
