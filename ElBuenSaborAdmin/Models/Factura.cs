@@ -17,7 +17,7 @@ namespace ElBuenSaborAdmin.Models
         public long Numero { get; set; }
         public DateTime Fecha { get; set; }
         [DisplayName("Valor Descuento")]
-        public double MontoDescuento { get; set; }
+        public decimal MontoDescuento { get; set; }
         public decimal Total { get; set; }
         [NotMapped]
         [DisplayName("Costo Total")]
