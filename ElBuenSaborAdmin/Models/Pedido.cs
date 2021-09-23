@@ -40,11 +40,12 @@ namespace ElBuenSaborAdmin.Models
                 {
                     -1 => "Esperando pago",
                     1 => "Esperando preparación",
-                    2 => "Cocinando",
-                    3 => "Pendiente de entrega (Delivery)",
-                    4 => "Pendiente de entrega (Local)",
+                    2 => "Pendiente de entrega (Local)",
+                    3 => "Pedido Cocinado",
+                    4 => "Pendiente de entrega (Delivery)",
                     5 => "Entregado",
                     6 => "Cancelado",
+                    7 => "Cocinando",
                     _ => "Esperando aprobación",
                 };
                 return estado;
