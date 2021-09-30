@@ -458,8 +458,8 @@ namespace ElBuenSaborAdmin.Controllers
                 {
                     currentRow++;
                     worksheet.Cell(currentRow, 1).Value = currentRow - 1;
-                    worksheet.Cell(currentRow, 2).Value = item.Cantidad;
-                    worksheet.Cell(currentRow, 3).Value = item.Denominacion;
+                    worksheet.Cell(currentRow, 2).Value = item.Denominacion;
+                    worksheet.Cell(currentRow, 3).Value = item.Cantidad;
                 }
 
                 worksheet.Column(1).AdjustToContents();
