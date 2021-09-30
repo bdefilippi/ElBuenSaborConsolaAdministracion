@@ -16,14 +16,6 @@ namespace ElBuenSaborAdmin.Models
         public Pedido Pedido { get; set; }
         public long ArticuloID { get; set; }
         public Articulo Articulo { get; set; }
-        [NotMapped]
-        public decimal GetTotal
-        {
-            get
-            {
-                return this.Cantidad * this.Subtotal;
-            }
-        }
 
     }
 }

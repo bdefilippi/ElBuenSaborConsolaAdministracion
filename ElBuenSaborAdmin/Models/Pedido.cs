@@ -22,7 +22,7 @@ namespace ElBuenSaborAdmin.Models
         [DisplayName("Forma de pago")]
         public String FormaPago { get; set; }
         [NotMapped]
-        public double Total { get; set; }
+        public decimal Total { get; set; }
         [DisplayName("Precio")]
         public long ClienteID { get; set; }
         public Cliente Cliente { get; set; }
@@ -67,11 +67,26 @@ namespace ElBuenSaborAdmin.Models
         {
             get
             {
-                decimal total = 0;
+                decimal subtotal = 0;
+                decimal total;
+                decimal descuento = 0;
                 foreach (var detalle in this.DetallesPedido)
                 {
-                    total += detalle.GetTotal;
+                    subtotal += detalle.Subtotal;
+
                 }
+                Console.WriteLine(subtotal);
+
+                //calcular el descuento en caso de que existiera (retiro en local)
+                if (this.TipoEnvio.Equals(0))
+                {
+                    descuento = subtotal / 10;
+                }
+                Console.WriteLine(descuento);
+
+                total = subtotal - descuento;
+                Console.WriteLine(total);
+
                 return total;
             }
         }

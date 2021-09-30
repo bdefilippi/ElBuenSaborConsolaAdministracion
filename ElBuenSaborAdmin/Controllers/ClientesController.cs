@@ -219,7 +219,7 @@ namespace ElBuenSaborAdmin.Controllers
                 .Include(c => c.Pedidos).ThenInclude(p => p.DetallesPedido).Where(r => r.Disabled.Equals(false))
                 .FirstOrDefaultAsync();
             //Pedidos entre fecha inicial y final
-            var pedidos = cliente.Pedidos.Where(p => p.Fecha >= fechaInicio && p.Fecha <= fechaFinal);
+            var pedidos = cliente.Pedidos.Where(p => p.Fecha >= fechaInicio && p.Fecha <= fechaFinal).ToList();
 
             //Create an instance of ExcelEngine
             using (var workbook = new XLWorkbook())
