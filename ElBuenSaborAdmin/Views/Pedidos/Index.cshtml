@@ -59,6 +59,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Pedidos[0].Domicilio)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pedidos[0].Cliente.Telefono)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -88,6 +91,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Domicilio.GetDomicilioCompleto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.Telefono)
             </td>
             <td>
                 <div class="dropdown">
