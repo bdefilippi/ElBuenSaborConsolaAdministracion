@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.DetalleRecetas[0].Articulo)
             </th>
+            <th>
+                Costo
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Articulo.Denominacion)
+            </td>
+            <td>
+                $@Html.DisplayFor(modelItem => item.Articulo.GetCostoTotal)
             </td>
             <td>
                 <div class="dropdown">

@@ -36,6 +36,8 @@ namespace ElBuenSaborAdmin.Controllers
             IQueryable<string> rubroNombreQuery = _context.Articulos.Where(r => r.Disabled.Equals(false)).Select(a => a.RubroArticulo.Denominacion);
 
             var articulos = _context.Articulos.Where(a => a.Disabled.Equals(false))
+                .Include(a => a.Recetas).Where(a => a.Disabled.Equals(false))
+                .Include(a => a.DetallesRecetas).Where(a => a.Disabled.Equals(false))
                 .Include(a => a.RubroArticulo).Where(a => a.Disabled.Equals(false))
                 .Include(a => a.PreciosVentaArticulos).Where(a => a.Disabled.Equals(false))
                 .Include(a => a.Stocks).Where(a => a.Disabled.Equals(false));

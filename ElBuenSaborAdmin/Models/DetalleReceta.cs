@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,6 +22,17 @@ namespace ElBuenSaborAdmin.Models
         public Receta Receta { get; set; }
         public bool Disabled { get; set; }
 
+        [NotMapped]
+        public decimal GetCosto
+        {
+            get
+            {
+                decimal cantidad = (decimal)this.Cantidad;
+                decimal subtotal = this.Articulo.Stocks.OrderBy(s => s.FechaCompra).Where(s => s.Disabled != true && s.CantidadDisponible > 0).First().GetPrecioUnitario;
+
+                return cantidad * subtotal;
+            }
+        }
 
     }
 }

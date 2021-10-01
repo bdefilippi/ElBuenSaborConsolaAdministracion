@@ -56,6 +56,9 @@
                 Precio de venta
             </th>
             <th>
+                Costo
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Articulos[0].RubroArticulo)
             </th>
             <th></th>
@@ -67,7 +70,7 @@
             <td>
                 @*@Html.DisplayFor(modelItem => item.Imagen)*@
                 <center>
-                    <img src="~/images/@item.Imagen" class="rounded-circle" height="40" asp-append-version="true"/>
+                    <img src="~/images/@item.Imagen" class="rounded-circle" height="40" asp-append-version="true" />
                 </center>
             </td>
             <td>
@@ -107,8 +110,20 @@
                 }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RubroArticulo.Denominacion)
+
+                @if (item.EsManufacturado)
+                {
+                    <div>$@Html.DisplayFor(modelItem => item.GetCostoTotalManufacturado)</div>
+                }
+                else
+                {
+                    <div>$@Html.DisplayFor(modelItem => item.GetCostoTotal)</div>
+                }
+
             </td>
+            <td>
+                <div>@Html.DisplayFor(modelItem => item.RubroArticulo.Denominacion)</div>
+</td>
             <td>
                 <div class="dropdown">
                     <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

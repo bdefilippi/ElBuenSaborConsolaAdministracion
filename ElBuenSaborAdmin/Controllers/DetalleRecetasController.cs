@@ -27,13 +27,15 @@ namespace ElBuenSaborAdmin.Controllers
         {
             var detRecVM = new IndexDetalleRecetaVM
             {
-                DetalleRecetas = await _context.DetallesRecetas.Where(a => a.Disabled.Equals(false)).Include(d => d.Articulo).Where(a => a.Disabled.Equals(false)).Include(d => d.Receta).Where(a => a.Disabled.Equals(false)).Where(r => r.RecetaID == idRec).ToListAsync(),
+                DetalleRecetas = await _context.DetallesRecetas.Where(a => a.Disabled.Equals(false))
+                .Include(d => d.Articulo).ThenInclude(a => a.Stocks).Where(a => a.Disabled.Equals(false))
+                .Include(d => d.Receta).Where(a => a.Disabled.Equals(false))
+                .Where(r => r.RecetaID == idRec).ToListAsync(),
                 IdArticulo = idArt,
                 IdReceta = idRec
             };
 
-            //var applicationDbContext = _context.DetallesRecetas.Where(a => a.Disabled.Equals(false)).Include(d => d.Articulo).Where(a => a.Disabled.Equals(false)).Include(d => d.Receta).Where(a => a.Disabled.Equals(false));
-            //return View(await applicationDbContext.Where(r => r.RecetaID == id).ToListAsync());
+           
             return View(detRecVM);
         }
 

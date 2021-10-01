@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-ElBuenSaborAdmin-F75346CF-9626-4DEE-A607-A29D1805FD79</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.0.2" />
     <PackageReference Include="ClosedXML" Version="0.95.4" />

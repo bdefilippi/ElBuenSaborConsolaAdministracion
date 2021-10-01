@@ -71,7 +71,56 @@ namespace ElBuenSaborAdmin.Models
                 }
 
                 return precioVenta;
-            } }
+            }
+        }
+
+        [NotMapped]
+        public decimal GetCostoTotal
+        {
+            get
+            {
+                try
+                {                    
+
+                    return Stocks.OrderBy(s => s.FechaCompra).Where(s => s.Disabled != true && s.CantidadDisponible > 0).First().GetPrecioUnitario;
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return 0;
+                }
+
+                
+            }
+        }
+
+        [NotMapped]
+        public decimal GetCostoTotalManufacturado 
+        {
+            get
+            {
+                decimal costo = 0;
+                try
+                {                    
+                    var receta = Recetas.Where(d => d.Disabled != true).FirstOrDefault();
+                    var detalles = receta.DetallesRecetas.Where(d => d.Disabled != true);
+                    foreach (var detalle in detalles)
+                    {
+                        costo += detalle.GetCosto;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    costo = 0;
+                }
+
+                return costo;
+            }
+
+        }
 
     }
 }
