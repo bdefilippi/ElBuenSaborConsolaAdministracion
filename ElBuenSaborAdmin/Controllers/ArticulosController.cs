@@ -91,7 +91,7 @@ namespace ElBuenSaborAdmin.Controllers
         // GET: Articulos/Create
         public IActionResult Create()
         {
-            ViewData["RubroArticuloID"] = new SelectList(_context.RubrosArticulos.Where(r => r.Disabled.Equals(false)), "Id", "Denominacion");
+            ViewData["RubroArticuloID"] = new SelectList(_context.RubrosArticulos.OrderBy(r => r.Denominacion).Where(r => r.Disabled.Equals(false)), "Id", "Denominacion");
             return View();
         }
 
