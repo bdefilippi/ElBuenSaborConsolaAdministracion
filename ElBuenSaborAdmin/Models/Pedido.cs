@@ -75,17 +75,14 @@ namespace ElBuenSaborAdmin.Models
                     subtotal += detalle.Subtotal;
 
                 }
-                Console.WriteLine(subtotal);
-
+                
                 //calcular el descuento en caso de que existiera (retiro en local)
                 if (this.TipoEnvio.Equals(0))
                 {
                     descuento = subtotal / 10;
                 }
-                Console.WriteLine(descuento);
-
+                
                 total = subtotal - descuento;
-                Console.WriteLine(total);
 
                 return total;
             }

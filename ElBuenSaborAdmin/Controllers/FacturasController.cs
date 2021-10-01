@@ -382,7 +382,7 @@ namespace ElBuenSaborAdmin.Controllers
 
                 currentRow++;
                 currentRow++;
-                worksheet.Cell(currentRow, 2).Value = "TOTALES";
+                worksheet.Cell(currentRow, 2).Value = "SUBTOTALES";
                 worksheet.Cell(currentRow, 2).Style.Font.Bold = true;
                 worksheet.Cell(currentRow, 3).Value = "$" + totalVentas;
                 worksheet.Cell(currentRow, 3).Style.Font.Bold = true;

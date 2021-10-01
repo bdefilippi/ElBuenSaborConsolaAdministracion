@@ -33,7 +33,7 @@ namespace ElBuenSaborAdmin.Models
                         total += egreso.CantidadEgresada * egreso.Stock.GetPrecioUnitario;
                     }
                 }
-
+                Console.WriteLine(total);
                 return total;
             } }
         public bool Disabled { get; set; }
