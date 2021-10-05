@@ -13,12 +13,20 @@
 
 <form asp-action="Index" method="get">
 
-    <p>
-        Cliente:
-        <input type="text" asp-for="SearchString" />
-        <input type="submit" value="Buscar" />
-    </p>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Cliente</span>
+        </div>
+
+        <input type="text" class="form-control" asp-for="SearchString" />
+
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+        </div>
+    </div>
+
 </form>
+
 <table class="table">
     <thead>
         <tr>

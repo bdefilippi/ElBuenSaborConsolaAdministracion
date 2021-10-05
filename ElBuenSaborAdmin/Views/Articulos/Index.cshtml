@@ -22,135 +22,151 @@
 </p>
 
 <form asp-action="Index" method="get">
-    <p>
-        Rubro:
-        <select asp-for="Rubro" asp-items="Model.RubrosNombres">
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Rubro</span>
+        </div>
+
+        <select asp-for="Rubro" asp-items="Model.RubrosNombres" class="custom-select">
             <option value="">Todos</option>
         </select>
+    </div>     
 
-        Artículo:
-        <input type="text" asp-for="SearchString" />
-        <input type="submit" value="Buscar" />
-    </p>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Artículo</span>
+        </div>
+
+        <input type="text" class="form-control" asp-for="SearchString" />
+
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+        </div>
+    </div>
+
 </form>
+    
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Articulos[0].Imagen)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Articulos[0].Denominacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Articulos[0].UnidadMedida)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Articulos[0].StockActual)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Articulos[0].StockMinimo)
-            </th>
-            <th>
-                Precio de venta
-            </th>
-            <th>
-                Costo unitario
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Articulos[0].RubroArticulo)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Articulos) {
-        <tr class="@(item.StockActual < item.StockMinimo && !item.EsManufacturado ? "stock-alerta" : "stock-normal")">
-            <td>
-                @*@Html.DisplayFor(modelItem => item.Imagen)*@
-                <center>
-                    <img src="~/images/@item.Imagen" class="rounded-circle" height="40" asp-append-version="true" />
-                </center>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Denominacion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnidadMedida)
-            </td>
-            <td>
-                @if (item.EsManufacturado)
-                {
-                    <div>-</div>
-                }
-                else
-                {
-                    @Html.DisplayFor(modelItem => item.StockActual)
-                }
-            </td>
-            <td>
-                @if (item.EsManufacturado)
-                {
-                    <div>-</div>
-                }
-                else
-                {
-                    @Html.DisplayFor(modelItem => item.StockMinimo)
-                }
-            </td>
-            <td>
-                @if (item.RubroArticuloID == 1)
-                {
-                    <div>-</div>
-                }
-                else
-                {
-                    <div>$@Html.DisplayFor(modelItem => item.GetUltimoPrecioVenta)</div>
-                }
-            </td>
-            <td>
 
-                @if (item.EsManufacturado)
-                {
-                    <div>$@Html.DisplayFor(modelItem => item.GetCostoTotalManufacturado)</div>
-                }
-                else
-                {
-                    <div>$@Html.DisplayFor(modelItem => item.GetCostoTotal)</div>
-                }
-
-            </td>
-            <td>
-                <div>@Html.DisplayFor(modelItem => item.RubroArticulo.Denominacion)</div>
-</td>
-            <td>
-                <div class="dropdown">
-                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="~/images/bootstrap-icons-1.5.0/list.svg" />
-                    </button>
-
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Articulos[0].Imagen)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Articulos[0].Denominacion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Articulos[0].UnidadMedida)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Articulos[0].StockActual)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Articulos[0].StockMinimo)
+                </th>
+                <th>
+                    Precio de venta
+                </th>
+                <th>
+                    Costo unitario
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Articulos[0].RubroArticulo)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Articulos)
+            {
+                <tr class="@(item.StockActual < item.StockMinimo && !item.EsManufacturado ? "stock-alerta" : "stock-normal")">
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Imagen)*@
+                        <center>
+                            <img src="~/images/@item.Imagen" class="rounded-circle" height="40" asp-append-version="true" />
+                        </center>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Denominacion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnidadMedida)
+                    </td>
+                    <td>
                         @if (item.EsManufacturado)
                         {
-                            <li><a class="dropdown-item" asp-controller="Recetas" asp-action="Index" asp-route-id="@item.Id">Ver Receta</a></li>
+                            <div>-</div>
                         }
                         else
                         {
-                            <li><a class="dropdown-item" asp-controller="Stocks" asp-action="Index" asp-route-id="@item.Id">Ver Ingresos</a></li>
+                            @Html.DisplayFor(modelItem => item.StockActual)
                         }
-                        @if (item.RubroArticuloID != 1)
+                    </td>
+                    <td>
+                        @if (item.EsManufacturado)
                         {
-                            <li><a class="dropdown-item" asp-controller="PrecioVentaArticulos" asp-action="Index" asp-route-id="@item.Id">Ver Histórico Precios de Venta</a></li>
+                            <div>-</div>
                         }
-                        <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
-                        <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></li>
-                    </ul>
-                </div>
-            </td>
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.StockMinimo)
+                        }
+                    </td>
+                    <td>
+                        @if (item.RubroArticuloID == 1)
+                        {
+                            <div>-</div>
+                        }
+                        else
+                        {
+                            <div>$@Html.DisplayFor(modelItem => item.GetUltimoPrecioVenta)</div>
+                        }
+                    </td>
+                    <td>
 
-        </tr>
-}
-    </tbody>
-</table>
-<a asp-action="MenuArticulos" asp-controller="Home">Regresar</a>
+                        @if (item.EsManufacturado)
+                        {
+                            <div>$@Html.DisplayFor(modelItem => item.GetCostoTotalManufacturado)</div>
+                        }
+                        else
+                        {
+                            <div>$@Html.DisplayFor(modelItem => item.GetCostoTotal)</div>
+                        }
+
+                    </td>
+                    <td>
+                        <div>@Html.DisplayFor(modelItem => item.RubroArticulo.Denominacion)</div>
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="~/images/bootstrap-icons-1.5.0/list.svg" />
+                            </button>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                @if (item.EsManufacturado)
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Recetas" asp-action="Index" asp-route-id="@item.Id">Ver Receta</a></li>
+                                }
+                                else
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Stocks" asp-action="Index" asp-route-id="@item.Id">Ver Ingresos</a></li>
+                                }
+                                @if (item.RubroArticuloID != 1)
+                                {
+                                    <li><a class="dropdown-item" asp-controller="PrecioVentaArticulos" asp-action="Index" asp-route-id="@item.Id">Ver Histórico Precios de Venta</a></li>
+                                }
+                                <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">Editar</a></li>
+                                <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></li>
+                            </ul>
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-action="MenuArticulos" asp-controller="Home">Regresar</a>

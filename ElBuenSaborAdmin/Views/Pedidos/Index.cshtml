@@ -12,24 +12,37 @@
 
 <form asp-action="Index" method="get">
 
-    <p>
-        Estado:
-        <select asp-for="Estado">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Estado</span>
+        </div>
+
+        <select asp-for="Estado" class="custom-select">
             <option value="">Todos</option>
             <option value="-1">Esperando pago</option>
             <option value="0">Esperando aprobación</option>
             <option value="1">Esperando preparación</option>
-            <option value="2">Pendiente de entrega (Local)</option>
+            <option value="7">En Preparación</option>
             <option value="3">Pedido Cocinado</option>
+            <option value="2">Pendiente de entrega (Local)</option>
             <option value="4">Pendiente de entrega (Delivery)</option>
             <option value="5">Entregado</option>
             <option value="6">Cancelado</option>
-            <option value="7">En Preparación</option>
         </select>
-        Cliente:
-        <input type="text" asp-for="SearchString" />
-        <input type="submit" value="Buscar" />
-    </p>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Cliente</span>
+        </div>
+
+        <input type="text" class="form-control" asp-for="SearchString" />
+
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+        </div>
+    </div>
+
 </form>
 
 <table class="table">
