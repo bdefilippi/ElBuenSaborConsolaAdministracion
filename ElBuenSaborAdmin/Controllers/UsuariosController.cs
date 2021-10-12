@@ -64,8 +64,18 @@ namespace ElBuenSaborAdmin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,NombreUsuario,Clave,Disabled,RolId")] Usuario usuario)
         {
+            ViewBag.Error = "";
+
             if (ModelState.IsValid)
             {
+                var nombreUsuarios = _context.Usuarios.Where(u => u.Disabled.Equals(false)).Select(u => u.NombreUsuario);
+                if (nombreUsuarios.Contains(usuario.NombreUsuario))
+                {
+                    ViewBag.Error = "El nombre de usuario ya existe.";
+                    ViewData["RolId"] = new SelectList(_context.Roles.Where(r => r.Disabled.Equals(false)), "Id", "Nombre", usuario.RolId);
+                    return View(usuario);
+                }
+
                 usuario.Clave = GetSHA256(usuario.Clave);
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
