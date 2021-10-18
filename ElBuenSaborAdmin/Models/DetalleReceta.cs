@@ -28,7 +28,17 @@ namespace ElBuenSaborAdmin.Models
             get
             {
                 decimal cantidad = (decimal)this.Cantidad;
-                decimal subtotal = this.Articulo.Stocks.OrderBy(s => s.FechaCompra).Where(s => s.Disabled != true && s.CantidadDisponible > 0).First().GetPrecioUnitario;
+                decimal subtotal;
+                try
+                {
+                    subtotal = this.Articulo.Stocks.OrderBy(s => s.FechaCompra).Where(s => s.Disabled != true && s.CantidadDisponible > 0).First().GetPrecioUnitario;
+                }
+                catch (Exception e)
+                {
+                    subtotal = 0;
+                    Console.WriteLine("Error en la edicion", e);
+                }
+                
 
                 return cantidad * subtotal;
             }
